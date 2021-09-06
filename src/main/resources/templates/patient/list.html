@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
-
-<head th:include="~{ head :: #head }"></head>
-
+    <head th:include="~{ head :: #head }"></head>
 <body>
-
     <header th:include="~{ header :: #header }"></header>
 
     <main>
+        <div th:if="${param.success}" style="color: #0F0">Opération effectuée avec succès</div>
+        <div th:if="${param.error}" style="color: #F00" th:text="${param.error}"></div>
+
         <div id="liste_patients">
-            <div class="entete_fenetre"> Liste des Patients</div>
+            <div class="entete_fenetre">Liste des Patients</div>
             <div class="conteneur_fenetre">
                 <table>
                     <tr>
@@ -29,26 +29,19 @@
                         <td th:utext="${patient.telephone}"></td>
                         <td th:utext="${patient.ville?.nom}"></td>
                         <td>
-                            <a th:href="@{'/patients/edit/' + ${patient.id}}"><i class="fas fa-edit"></i></a>
-                            <a th:href="@{'/patients/delete/' + ${patient.id}}"><i class="fas fa-trash"></i></a>
+                            <a th:href="@{'/patient/edit/' + ${patient.id}}"><i class="fas fa-edit"></i></a>
+                            <a th:href="@{'/patient/delete/' + ${patient.id}}"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                 </table>
                 <br />
                 <div class="fonctions">
-                    <button><a href="/patients/add">
-                            Nouveau patient
-                        </a></button>
-
+                    <a href="/patient/add" class="button">Nouveau patient</a>
                 </div>
             </div>
-
-
         </div>
     </main>
 
     <footer th:include="~{ footer :: #footer }"></footer>
-
 </body>
-
 </html>
