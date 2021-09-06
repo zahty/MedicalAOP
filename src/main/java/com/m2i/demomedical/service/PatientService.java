@@ -20,37 +20,35 @@ public class PatientService {
         return pr.findAll();
     }
 
-    public void addPatient(String nom, String prenom, String telephone , String email,  int ville ){
-        try{
-            PatientEntity p = new PatientEntity();
-            p.setNom(nom);
-            p.setPrenom(prenom);
-            p.setEmail(email);
-            p.setTelephone(telephone);
-            VilleEntity villeP = new VilleEntity();
-            villeP.setId( ville );
-            p.setVille( villeP );
-            pr.save( p );
-
-        }catch( Exception e ){
-            throw e;
+    public void addPatient(String nom, String prenom, String telephone , String email,  int ville ) throws Exception {
+        if( prenom.length() < 2 ){
+            throw new Exception("Invalid value pour patient");
         }
+
+        PatientEntity p = new PatientEntity();
+        p.setNom(nom);
+        p.setPrenom(prenom);
+        p.setEmail(email);
+        p.setTelephone(telephone);
+        VilleEntity villeP = new VilleEntity();
+        villeP.setId( ville );
+        p.setVille( villeP );
+        pr.save( p );
     }
 
-    public void editPatient(int idp, String nom, String prenom, String email, String telephone , int ville ){
-        try{
-            PatientEntity p = pr.findById(idp).get();
-            p.setNom(nom);
-            p.setPrenom(prenom);
-            p.setEmail(email);
-            p.setTelephone(telephone);
-            VilleEntity villeP = new VilleEntity();
-            villeP.setId( ville );
-            p.setVille( villeP );
-            pr.save( p );
-        }catch( Exception e ){
-            throw e;
+    public void editPatient(int idp, String nom, String prenom, String email, String telephone , int ville ) throws Exception {
+        if( prenom.length() < 2 ){
+            throw new Exception("Invalid");
         }
+        PatientEntity p = pr.findById(idp).get();
+        p.setNom(nom);
+        p.setPrenom(prenom);
+        p.setEmail(email);
+        p.setTelephone(telephone);
+        VilleEntity villeP = new VilleEntity();
+        villeP.setId( ville );
+        p.setVille( villeP );
+        pr.save( p );
     }
 
     public PatientEntity find(int id) {

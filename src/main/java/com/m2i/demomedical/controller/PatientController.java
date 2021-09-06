@@ -43,7 +43,7 @@ public class PatientController {
     }
 
     @PostMapping("/add")
-    public String addPost( HttpServletRequest request ){
+    public String addPost( HttpServletRequest request, Model model  ){
         try{
             String nom = request.getParameter("nom");
             String prenom = request.getParameter("prenom");
@@ -53,7 +53,9 @@ public class PatientController {
             ps.addPatient(nom, prenom, telephone, email, Integer.parseInt( ville ) );
             return "redirect:/patient?success";
         }catch( Exception e ){
-            return "patient/add_edit?error="+e.getMessage();
+            model.addAttribute("error" , e.getMessage() );
+            model.addAttribute( "p" , new PatientEntity() );
+            return "patient/add_edit";
         }
     }
 

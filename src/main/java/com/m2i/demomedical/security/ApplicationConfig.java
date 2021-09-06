@@ -15,6 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.sql.DataSource;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true,
+        prePostEnabled = true)
 public class ApplicationConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -29,7 +34,7 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure( HttpSecurity http  ) throws Exception {
         //formLogin = utiliser un formulaire d'authetification - loginPage : chemin de l'authentification
-        http.formLogin().loginPage("/login").defaultSuccessUrl("/dashboard");
+        http.formLogin().loginPage("/login").defaultSuccessUrl("/");
         // Autoriser un accès anonyme sur les routes /login et /css/**
         http.authorizeRequests().antMatchers("/login" , "/css/**" ).permitAll();
         // Autoriser les actions post pour les admins : ROLE_ADMIN
