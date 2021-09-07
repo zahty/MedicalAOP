@@ -50,10 +50,14 @@ public class PatientController {
         String email = request.getParameter("email");
         String ville = request.getParameter("ville");
 
+        // Log : paramètres récupérés : X, Y ,Z
+
         try{
             ps.addPatient(nom, prenom, telephone, email, Integer.parseInt( ville ) );
+            // Log : opération add Patient Success
             return "redirect:/patient?success";
         }catch( Exception e ){
+            // Log : opération add Patient error + erreur
             model.addAttribute("error" , e.getMessage() );
 
             // Récupérer les anciens paramètres
@@ -85,7 +89,7 @@ public class PatientController {
             ps.editPatient(id, nom, prenom, email, telephone , Integer.parseInt( ville ) );
             return "redirect:/patient?success";
         }catch( Exception e ){
-            return "patient/add_edit?error="+e.getMessage();
+            return "patient/add_edit";
         }
     }
 

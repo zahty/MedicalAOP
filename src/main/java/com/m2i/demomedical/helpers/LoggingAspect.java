@@ -1,8 +1,10 @@
 package com.m2i.demomedical.helpers;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,22 @@ public class LoggingAspect {
 
     public LoggingAspect(LoggingHelper lh) {
         this.lh = lh;
+    }
+
+    // add(..) = Add ayant n'importe quel paramètres
+    @Before("execution(* com.m2i.demomedical.controller.PatientController.add(..) )")
+    public void callOnPatientGet() {
+        System.out.println("Je suis un aspect, je m'execute avant Get Patient");
+    }
+
+    @After("execution(* com.m2i.demomedical.controller.PatientController.add(..) )")
+    public void callAfterPatientGet() {
+        System.out.println("Je suis un aspect, je m'execute après Get Patient");
+    }
+
+    @Before("execution(* com.m2i.demomedical.service.PatientService.*(..) )")
+    public void callOnPatientServiceCall() {
+        System.out.println("Je suis un aspect, je m'execute avant chaque méthode de patient Service");
     }
 
     @Around("execution(* com.m2i.demomedical.controller.PatientController.*(..))")
@@ -56,4 +74,7 @@ public class LoggingAspect {
         lh.log( chaine , INFO );
         return value;
     }
+
+
+
 }
