@@ -4,6 +4,7 @@ import com.m2i.demomedical.entities.UserEntity;
 import com.m2i.demomedical.repository.UserRepository;
 import com.m2i.demomedical.security.ApplicationConfig;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
+@Secured("ROLE_ADMIN")
 public class UtilisateursController {
 
     final ApplicationConfig applicationConfig;
@@ -34,7 +36,6 @@ public class UtilisateursController {
         model.addAttribute("liste_utilisateurs", lu);
         return "user/list";
     }
-
 
     @GetMapping(value = "/add")
     public String addUserGet(Model model) {
@@ -131,4 +132,9 @@ public class UtilisateursController {
     }
 
 
+    @GetMapping( value = "/profile/{id}" )
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    public String myProfile( @PathVariable int id ){
+        return "";
+    }
 }
