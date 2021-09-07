@@ -5,6 +5,8 @@
     <a href="/ville">Villes</a>
     <a href="/user">Utilisateurs</a>
     <a href="/logout">Logout</a>
+
+    <div  style="color: #FFF;    float: right;">Bienvenue <span th:text =" ${#authentication.getPrincipal().getUser().getName()}"></span> </div>
 </header>
 
 <div th:if="${param.success}" class="success" style="color: #00FF00">Opération effectuée avec succès</div>
