@@ -16,29 +16,29 @@
                     <div class="icon_champ">
                         <span class="icone"><i class="fas fa-user-edit"></i>Prénom</span>
                         <input type="text" name="prenom" th:placeholder="Prénom"
-                            th:value="${p.prenom}">
+                            th:value="${p.prenom}" minlength="2" required>
                     </div>
                     <div class="icon_champ">
                         <span class="icone"><i class="fas fa-user-edit"></i>Nom</span>
-                        <input type="text" name="nom" th:placeholder="Nom" th:value="${p.nom}">
+                        <input type="text" name="nom" th:placeholder="Nom" th:value="${p.nom}" minlength="2" required >
                     </div>
                 </div>
                 <div class="form_block">
                     <div class="icon_champ">
                         <span class="icone"><i class="fas fa-at"></i>Email</span>
                         <input type="email" name="email" id="email" th:placeholder="Email"
-                            th:value="${p.email}">
+                            th:value="${p.email}" minlength="2" required>
                     </div>
                     <div class="icon_champ">
                         <span class="icone"><i class="fas fa-phone-alt"></i>Téléphone</span>
-                        <input type="text" name="telephone" th:placeholder="Téléphone" th:value="${p.telephone}" >
+                        <input type="text" name="telephone" th:placeholder="Téléphone" th:value="${p.telephone}" minlength="2" required >
                     </div>
                 </div>
                 <div class=" form_block">
                     <div class="icon_champ">
                         <span class="icone"><i class="fas fa-city"></i>Ville</span>
-                        <select name="ville" id="ville">
-
+                        <select name="ville" id="ville" required>
+                            <option value="">Sélectionner ville</option>
                             <option th:each="ville : ${liste_villes}" th:value="${ville.id}" th:utext="${ville.nom}"
                                 th:selected="${ville.id==p.ville?.id}"></option>
                         </select>

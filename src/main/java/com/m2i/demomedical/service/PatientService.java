@@ -5,6 +5,7 @@ import com.m2i.demomedical.entities.VilleEntity;
 import com.m2i.demomedical.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PatientService {
@@ -20,10 +21,28 @@ public class PatientService {
         return pr.findAll();
     }
 
-    public void addPatient(String nom, String prenom, String telephone , String email,  int ville ) throws Exception {
+    private void  checkPatient( String nom, String prenom, String telephone , String email ) throws Exception {
         if( prenom.length() < 2 ){
-            throw new Exception("Invalid value pour patient");
+            throw new Exception("Invalid value pour prénom");
         }
+
+        if( nom.length() < 2 ){
+            throw new Exception("Invalid value pour nom");
+        }
+
+        if( telephone.length() < 2 ){
+            throw new Exception("Invalid value pour telephone");
+        }
+
+        if( email.length() < 2 ){
+            throw new Exception("Invalid value pour email");
+        }
+    }
+
+    @Transactional
+    public void addPatient(String nom, String prenom, String telephone , String email,  int ville ) throws Exception {
+
+        checkPatient( nom, prenom, telephone , email );
 
         PatientEntity p = new PatientEntity();
         p.setNom(nom);
@@ -37,9 +56,8 @@ public class PatientService {
     }
 
     public void editPatient(int idp, String nom, String prenom, String email, String telephone , int ville ) throws Exception {
-        if( prenom.length() < 2 ){
-            throw new Exception("Invalid");
-        }
+        checkPatient( nom, prenom, telephone , email );
+
         PatientEntity p = pr.findById(idp).get();
         p.setNom(nom);
         p.setPrenom(prenom);

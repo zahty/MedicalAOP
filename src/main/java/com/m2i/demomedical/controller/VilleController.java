@@ -46,7 +46,7 @@ public class VilleController {
             vs.add(nom, cp );
             return "redirect:/ville?success";
         }catch( Exception e ){
-            return "ville/add_edit?error="+e.getMessage();
+            return "ville/add_edit";
         }
     }
 

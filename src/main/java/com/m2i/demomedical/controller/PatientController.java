@@ -44,17 +44,23 @@ public class PatientController {
 
     @PostMapping("/add")
     public String addPost( HttpServletRequest request, Model model  ){
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String telephone = request.getParameter("telephone");
+        String email = request.getParameter("email");
+        String ville = request.getParameter("ville");
+
         try{
-            String nom = request.getParameter("nom");
-            String prenom = request.getParameter("prenom");
-            String telephone = request.getParameter("telephone");
-            String email = request.getParameter("email");
-            String ville = request.getParameter("ville");
             ps.addPatient(nom, prenom, telephone, email, Integer.parseInt( ville ) );
             return "redirect:/patient?success";
         }catch( Exception e ){
             model.addAttribute("error" , e.getMessage() );
-            model.addAttribute( "p" , new PatientEntity() );
+
+            // Récupérer les anciens paramètres
+            PatientEntity perreur = new PatientEntity();
+            perreur.setNom(nom);
+
+            model.addAttribute( "p" , perreur );
             return "patient/add_edit";
         }
     }

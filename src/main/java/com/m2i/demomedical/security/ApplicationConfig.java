@@ -3,6 +3,7 @@ package com.m2i.demomedical.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,21 +32,40 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder( passwordEncoder() );
     }
 
-    @Override
-    protected void configure( HttpSecurity http  ) throws Exception {
-        //formLogin = utiliser un formulaire d'authetification - loginPage : chemin de l'authentification
-        http.formLogin().loginPage("/login").defaultSuccessUrl("/");
-        // Autoriser un accès anonyme sur les routes /login et /css/**
-        http.authorizeRequests().antMatchers("/login" , "/css/**" ).permitAll();
-        // Autoriser les actions post pour les admins : ROLE_ADMIN
-        http.authorizeRequests().antMatchers("**/add" , "**/edit/**" , "**/delete/**").hasRole("ADMIN");
-
-        // Tous les utilisateurs qui ne sont pas mentionnées en haut devrait s'authentifier
-        http.authorizeRequests().anyRequest().authenticated();
-
-        // désactiver la protection csrf
-        http.csrf().disable();
+    @Configuration
+    @Order(1)
+    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .antMatcher("/ws/**")
+                    .authorizeRequests(authorize -> authorize
+                            .anyRequest().hasRole("ADMIN")
+                    )
+                    .httpBasic();
+        }
     }
+
+    @Configuration
+    @Order(2)
+    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            //formLogin = utiliser un formulaire d'authetification - loginPage : chemin de l'authentification
+            http.formLogin().loginPage("/login").defaultSuccessUrl("/");
+            // Autoriser un accès anonyme sur les routes /login et /css/**
+            http.authorizeRequests().antMatchers("/login" , "/css/**" ).permitAll();
+            // Autoriser les actions post pour les admins : ROLE_ADMIN
+            http.authorizeRequests().antMatchers("**/add" , "**/edit/**" , "**/delete/**").hasRole("ADMIN");
+
+            // Tous les utilisateurs qui ne sont pas mentionnées en haut devrait s'authentifier
+            http.authorizeRequests().anyRequest().authenticated();
+
+            // désactiver la protection csrf
+            http.csrf().disable();
+        }
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
